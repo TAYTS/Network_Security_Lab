@@ -3,6 +3,8 @@
 <body>
     <h1>This page forges an HTTP POST request.</h1>
     <script type="text/javascript">
+        var count = 0;
+
         function forge_post() {
             var fields;
 
@@ -38,7 +40,12 @@
             p.submit();
         }
 
-        window.onload = function () { forge_post(); }
+        window.onload = function () {
+            if (count === 0) {
+                forge_post();
+                count++;
+            }
+        }
     </script>
 
 </body>
