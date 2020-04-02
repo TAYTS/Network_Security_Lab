@@ -5,8 +5,10 @@
 #include <linux/netfilter_ipv4.h>
 #include <linux/tcp.h>
 
+// struct used to register our function
 static struct nf_hook_ops nfho;
 
+// hook function itself
 unsigned int hook_func(void *priv, struct sk_buff *skb,
                        const struct nf_hook_state *state) {
   struct iphdr *iph;
@@ -16,12 +18,19 @@ unsigned int hook_func(void *priv, struct sk_buff *skb,
   tcph = (void *)iph + iph->ihl * 4;
 
   // Rule 1: Preventing VM A from doing telnet to VM B
+  if (iph->protocol == IPPROTO_TCP && iph->saddr == inet_addr("10.0.2.7") &&
+      iph->daddr == inet_addr("10.0.2.8")) {
+    if (ntohs(tcph->dest) == 23) {
+      return NF_DROP;
+    }
+  }
   // Rule 2: Preventing VM A from visiting a website
   // Rule 3: Preventing VM A from doing SSH to VM B
 
   return NF_DROP;
 }
 
+// initialise routine
 int setUpFilter(void) {
   printk(KERN_INFO "Registering a Telnet filter.\n");
   nfho.hook = hook_func;
@@ -34,6 +43,7 @@ int setUpFilter(void) {
   return 0;
 }
 
+// remove routine
 void removeFilter(void) {
   printk(KERN_INFO "Telnet filter is being removed.\n");
   nf_unregister_hook(&nfho);
