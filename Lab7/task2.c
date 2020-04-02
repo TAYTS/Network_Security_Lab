@@ -3,8 +3,8 @@
 #include <linux/module.h>
 #include <linux/netfilter.h>
 #include <linux/netfilter_ipv4.h>
-#include <linux/tcp.h>
 #include <linux/string.h>
+#include <linux/tcp.h>
 
 static struct nf_hook_ops nfho;
 
@@ -23,18 +23,25 @@ unsigned int hook_func(void *priv, struct sk_buff *skb,
 
   snprintf(srcAddr, 16, "%pI4", &iph->saddr);
   snprintf(dstAddr, 16, "%pI4", &iph->daddr);
-  
+
   // Rule 1: Preventing VM A from doing telnet to VM B
-  if (iph->protocol == IPPROTO_TCP && strcmp(srcAddr, hostA_Addr) == 0 && strcmp(dstAddr, hostB_Addr) == 0 && tcph->dest == htons(23)) {
-    return NF_DROP;
-  }
- 
- // Rule 2: Preventing VM A from visiting a website
- if (iph->protocol == IPPROTO_TCP && strcmp(srcAddr, hostA_Addr) == 0 && strcmp(dstAddr, facebook_Addr) == 0 && tcph->dest == htons(443)) {
+  if (iph->protocol == IPPROTO_TCP && strcmp(srcAddr, hostA_Addr) == 0 &&
+      strcmp(dstAddr, hostB_Addr) == 0 && tcph->dest == htons(23)) {
     return NF_DROP;
   }
 
- // Rule 3: Preventing VM A from doing SSH to VM B
+  // Rule 2: Preventing VM A from visiting a website
+  if (iph->protocol == IPPROTO_TCP && strcmp(srcAddr, hostA_Addr) == 0 &&
+      strcmp(dstAddr, facebook_Addr) == 0 &&
+      (tcph->dest == htons(443) || tcph->dest == htons(80))) {
+    return NF_DROP;
+  }
+
+  // Rule 3: Preventing VM A from doing SSH to VM B
+  if (iph->protocol == IPPROTO_TCP && strcmp(srcAddr, hostA_Addr) == 0 &&
+      strcmp(dstAddr, hostB_Addr) == 0 && tcph->dest == htons(22)) {
+    return NF_DROP;
+  }
 
   return NF_ACCEPT;
 }
